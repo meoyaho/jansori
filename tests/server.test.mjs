@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createApp } from '../server.mjs';
+import { instructions } from '../functions/prompt.mjs';
 
 async function app(t, options = {}) {
   const server = createApp({ fetchImpl: async () => { throw Error('Unexpected upstream call'); }, ...options });
@@ -25,7 +26,7 @@ test('invalid text, oversized bodies and direction overrides never call OpenAI',
   assert.equal((await post({ text: '안녕' }, { Origin: 'https://unrelated.example' })).status, 403);
 });
 
-test('fixed nano model and one-way instructions; identical input reuses result', async t => {
+test('fixed nano model and configured instructions; identical input reuses result', async t => {
   let calls = 0;
   const { post } = await app(t, { apiKey: 'test-only', fetchImpl: async (url, options) => {
     calls++;
@@ -34,7 +35,7 @@ test('fixed nano model and one-way instructions; identical input reuses result',
     const body = JSON.parse(options.body);
     assert.equal(body.model, 'gpt-5-nano'); assert.equal(body.store, false);
     assert.equal(body.reasoning.effort, 'minimal'); assert.equal(body.max_output_tokens, 512);
-    assert.match(body.instructions, /ONLY in that direction/);
+    assert.equal(body.instructions, instructions);
     assert.equal(body.input, '결혼은 언제 하니?');
     return completed('좋은 인연 만나서 서로 아끼고 잘 살면 좋겠다.');
   } });
