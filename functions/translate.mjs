@@ -80,8 +80,8 @@ export function createTranslationHandler({
           method: 'POST',
           headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${key}` },
           body: JSON.stringify({
-            model: 'gpt-5.6-luna', instructions, input: text,
-            reasoning: { effort: 'none' }, text: { verbosity: 'low' },
+            model: 'gpt-5-nano', instructions, input: text,
+            reasoning: { effort: 'minimal' }, text: { verbosity: 'low' },
             max_output_tokens: 512, store: false,
           }),
           signal: controller.signal,
