@@ -1,5 +1,4 @@
 const paths = {
-  star:'<path d="m12 3 2.8 5.7 6.3.9-4.5 4.4 1.1 6.2-5.7-3-5.7 3 1.1-6.2L3 9.6l6.2-.9L12 3Z"/>',
   edit:'<path d="m16 3 5 5-12 12-6 1 1-6L16 3ZM13 6l5 5"/>',
   history:'<path d="M3 3v6h6M3.5 9A9 9 0 1 1 3 15M12 7v5l3 2"/>',
   mic:'<rect x="8" y="2" width="8" height="13" rx="4"/><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3M8 22h8"/>',
@@ -31,16 +30,13 @@ let composing = false;
 let pendingTranslation = null;
 let requestVersion = 0;
 const translationCache = new Map();
-let collection = 'saved';
 function readRecords(storage, key) {
   try {
     const data = JSON.parse(storage.getItem(key) || '[]');
     return Array.isArray(data) ? data.filter(x => x && typeof x.source === 'string' && typeof x.result === 'string').slice(0, 100) : [];
   } catch { return []; }
 }
-let saved = [];
 let history = [];
-try { saved = readRecords(localStorage, 'deokdam-saved'); } catch {}
 try { history = readRecords(sessionStorage, 'deokdam-history'); } catch {}
 function toast(message) {
   $('toast').textContent = message;
@@ -54,16 +50,11 @@ function updateInput() {
   $('char-count').hidden = !length;
   $('clear').hidden = !length;
 }
-function updateSave() {
-  $('save').setAttribute('aria-pressed', String(!!current && saved.some(x => x.source === current.source && x.result === current.result)));
-}
 function display(record) {
   current = record;
   $('result').textContent = record ? record.result : '번역';
   $('result').classList.toggle('placeholder', !record);
-  $('save').hidden = !record;
   $('result-actions').hidden = !record;
-  updateSave();
 }
 function cancelTranslation() {
   clearTimeout(translationTimer);
@@ -144,14 +135,6 @@ function setMode(voice) {
   $('voice-mode').setAttribute('aria-pressed', String(voice));
 }
 $('edit').onclick = $('text-mode').onclick = () => { stopListening(); $('source').focus(); };
-$('save').onclick = () => {
-  if (!current) return;
-  const index = saved.findIndex(x => x.source === current.source && x.result === current.result);
-  const next = [...saved];
-  if (index >= 0) next.splice(index, 1); else next.unshift({ ...current });
-  try { localStorage.setItem('deokdam-saved', JSON.stringify(next.slice(0, 100))); saved = next.slice(0, 100); updateSave(); toast(index >= 0 ? '저장 해제됨' : '저장됨'); }
-  catch { toast('저장할 수 없어요. 복사를 이용해 주세요.'); }
-};
 $('copy').onclick = async () => {
   if (!current) return;
   try { await navigator.clipboard.writeText(current.result.replaceAll('\n', ' ')); toast('복사됨'); }
@@ -167,15 +150,13 @@ $('speak').onclick = () => {
   speechSynthesis.speak(utterance);
 };
 function renderCollection() {
-  $('collection-title').textContent = collection === 'saved' ? '저장된 번역' : '기록';
-  const records = collection === 'saved' ? saved : history;
   const list = $('collection-list'); list.replaceChildren();
-  if (!records.length) {
+  if (!history.length) {
     const empty = document.createElement('p'); empty.className = 'collection-empty';
-    empty.textContent = collection === 'saved' ? '저장된 번역이 없습니다.' : '번역 기록이 없습니다.';
+    empty.textContent = '번역 기록이 없습니다.';
     list.append(empty); return;
   }
-  records.forEach(item => {
+  history.forEach(item => {
     const row = document.createElement('article'); row.className = 'record';
     const content = document.createElement('button'); content.className = 'record-content';
     const source = document.createElement('span'); source.textContent = item.source;
@@ -185,20 +166,16 @@ function renderCollection() {
     const remove = document.createElement('button'); remove.className = 'icon-button'; remove.setAttribute('aria-label', `${item.source} 삭제`); remove.title = '삭제';
     remove.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true">${paths.close}</svg>`;
     remove.onclick = () => {
-      const next = records.filter(x => x !== item);
+      const next = history.filter(x => x !== item);
       try {
-        if (collection === 'saved') { localStorage.setItem('deokdam-saved', JSON.stringify(next)); saved = next; }
-        else { sessionStorage.setItem('deokdam-history', JSON.stringify(next)); history = next; }
-        updateSave(); renderCollection();
+        sessionStorage.setItem('deokdam-history', JSON.stringify(next));
+        history = next; renderCollection();
       } catch { toast('삭제하지 못했어요. 다시 시도해 주세요.'); }
     };
     row.append(content, remove); list.append(row);
   });
 }
-for (const kind of ['saved', 'history']) $(kind).onclick = () => {
-  stopListening();
-  collection = kind; renderCollection(); $('collection-dialog').showModal();
-};
+$('history').onclick = () => { stopListening(); renderCollection(); $('collection-dialog').showModal(); };
 $('help').onclick = () => { stopListening(); $('help-dialog').showModal(); };
 document.querySelectorAll('[data-close]').forEach(button => button.onclick = () => $(button.dataset.close).close());
 document.querySelectorAll('dialog').forEach(dialog => dialog.addEventListener('click', event => {
