@@ -4,7 +4,7 @@
 
 - 화면: GitHub Pages — https://meoyaho.github.io/jansori/
 - API: Firebase Functions — `jansori-28924`, 서울(`asia-northeast3`)
-- 모델: OpenAI `gpt-5-nano` (Responses API)
+- 모델: OpenAI `gpt-5.6-luna` (Responses API)
 - 프롬프트: `functions/prompt.mjs`
 
 Firebase Hosting, Firestore, 클라이언트 Firebase SDK 및 Analytics는 사용하지 않습니다.

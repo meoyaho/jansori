@@ -26,15 +26,15 @@ test('invalid text, oversized bodies and direction overrides never call OpenAI',
   assert.equal((await post({ text: '안녕' }, { Origin: 'https://unrelated.example' })).status, 403);
 });
 
-test('fixed nano model and configured instructions; identical input reuses result', async t => {
+test('fixed Luna model and configured instructions; identical input reuses result', async t => {
   let calls = 0;
   const { post } = await app(t, { apiKey: 'test-only', fetchImpl: async (url, options) => {
     calls++;
     assert.equal(url, 'https://api.openai.com/v1/responses');
     assert.equal(options.headers.Authorization, 'Bearer test-only');
     const body = JSON.parse(options.body);
-    assert.equal(body.model, 'gpt-5-nano'); assert.equal(body.store, false);
-    assert.equal(body.reasoning.effort, 'minimal'); assert.equal(body.max_output_tokens, 512);
+    assert.equal(body.model, 'gpt-5.6-luna'); assert.equal(body.store, false);
+    assert.equal(body.reasoning.effort, 'none'); assert.equal(body.max_output_tokens, 512);
     assert.equal(body.instructions, instructions);
     assert.equal(body.input, '결혼은 언제 하니?');
     return completed('좋은 인연 만나서 서로 아끼고 잘 살면 좋겠다.');
