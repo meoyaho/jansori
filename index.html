@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#ffffff" />
   <meta name="description" content="잔소리를 덕담으로 번역하세요." />
-  <title>알고보면 다 좋은 말이여</title>
+  <title>행복한 명절</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%231a73e8'/%3E%3Ctext x='32' y='43' text-anchor='middle' font-size='36' fill='white'%3E덕%3C/text%3E%3C/svg%3E" />
   <link rel="stylesheet" href="style.css" />
   <script type="module" src="app.js"></script>
 </head>
 <body>
   <header class="site-header">
-    <a class="brand" href="./" aria-label="덕담 번역 홈">알고 보면 다 좋은 말이여~</a>
+    <a class="brand" href="./" aria-label="번역 홈">행복한 명절</a>
     <button class="icon-button" id="help" aria-label="도움말" title="도움말"><i data-icon="help"></i></button>
   </header>
   <main>
@@ -33,7 +33,7 @@
             <button class="icon-button" id="edit" aria-label="직접 입력" title="직접 입력"><i data-icon="edit"></i></button>
           </div>
         </section>
-        <section class="result-panel" aria-label="덕담 번역 결과">
+        <section class="result-panel" aria-label="번역 결과">
           <button class="icon-button panel-top-action" id="save" aria-label="덕담 저장" aria-pressed="false" title="저장" hidden><i data-icon="star"></i></button>
           <div id="result" class="result-text placeholder" aria-live="polite">번역</div>
           <div class="panel-toolbar" id="result-actions" hidden>
@@ -54,7 +54,7 @@
     <div id="collection-list"></div>
   </dialog>
   <dialog id="help-dialog" class="help-dialog" aria-labelledby="help-title">
-    <div class="dialog-header"><h2 id="help-title">덕담 번역</h2><button class="icon-button" data-close="help-dialog" aria-label="도움말 닫기"><i data-icon="close"></i></button></div>
+    <div class="dialog-header"><h2 id="help-title">행복한 명절</h2><button class="icon-button" data-close="help-dialog" aria-label="도움말 닫기"><i data-icon="close"></i></button></div>
     <p>입력하거나 마이크를 누르면 자동으로 번역해요.</p>
     <p class="help-note">잔소리를 덕담으로만 바꿉니다. 입력한 문장은 번역을 위해 OpenAI로 전송됩니다. 음성 인식은 지원 브라우저에서 사용할 수 있으며, 브라우저 제공사의 서비스에서 처리될 수 있어요.</p>
   </dialog>
