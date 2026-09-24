@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#ffffff" />
+  <meta name="description" content="잔소리를 덕담으로 번역하세요." />
+  <title>알고보면 다 좋은 말이여</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%231a73e8'/%3E%3Ctext x='32' y='43' text-anchor='middle' font-size='36' fill='white'%3E덕%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="style.css" />
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="./" aria-label="덕담 번역 홈">알고 보면 다 좋은 말이여~</a>
+    <button class="icon-button" id="help" aria-label="도움말" title="도움말"><i data-icon="help"></i></button>
+  </header>
+  <main>
+    <div class="input-modes" aria-label="입력 방식">
+      <button class="mode-button active" id="text-mode" aria-pressed="true"><i data-icon="translate"></i>텍스트</button>
+      <button class="mode-button" id="voice-mode" aria-pressed="false"><i data-icon="mic"></i>음성</button>
+    </div>
+    <section class="translator" aria-label="잔소리 번역기">
+      <div class="language-bar"><div><span>잔소리</span></div><i data-icon="arrow" class="direction"></i><div><span>덕담</span></div></div>
+      <div class="panels">
+        <section class="source-panel" aria-label="잔소리 입력">
+          <button id="clear" class="icon-button panel-top-action" aria-label="입력 지우기" title="지우기" hidden><i data-icon="close"></i></button>
+          <textarea id="source" aria-label="번역할 잔소리" maxlength="300" spellcheck="false"></textarea>
+          <div class="panel-toolbar">
+            <button class="icon-button" id="listen" aria-label="잔소리 듣기" aria-pressed="false" title="잔소리 듣기"><i data-icon="mic"></i></button>
+            <span id="listening-status" role="status" hidden>듣는 중…</span>
+            <span id="char-count" hidden>0 / 300</span>
+            <button class="icon-button" id="edit" aria-label="직접 입력" title="직접 입력"><i data-icon="edit"></i></button>
+          </div>
+        </section>
+        <section class="result-panel" aria-label="덕담 번역 결과">
+          <button class="icon-button panel-top-action" id="save" aria-label="덕담 저장" aria-pressed="false" title="저장" hidden><i data-icon="star"></i></button>
+          <div id="result" class="result-text placeholder" aria-live="polite">번역</div>
+          <div class="panel-toolbar" id="result-actions" hidden>
+            <button class="icon-button" id="speak" aria-label="덕담 소리 내어 읽기" title="듣기"><i data-icon="volume"></i></button>
+            <button class="icon-button push-right" id="copy" aria-label="덕담 복사" title="복사"><i data-icon="copy"></i></button>
+          </div>
+        </section>
+      </div>
+    </section>
+    <nav class="collection-shortcuts" aria-label="번역 보관함">
+      <button id="history"><span class="circle-icon"><i data-icon="history"></i></span><span>기록</span></button>
+      <button id="saved"><span class="circle-icon"><i data-icon="star"></i></span><span>저장된 번역</span></button>
+    </nav>
+  </main>
+  <div id="toast" class="toast" role="status"></div>
+  <dialog id="collection-dialog" class="collection-dialog" aria-labelledby="collection-title">
+    <div class="dialog-header"><h2 id="collection-title">기록</h2><button class="icon-button" data-close="collection-dialog" aria-label="보관함 닫기"><i data-icon="close"></i></button></div>
+    <div id="collection-list"></div>
+  </dialog>
+  <dialog id="help-dialog" class="help-dialog" aria-labelledby="help-title">
+    <div class="dialog-header"><h2 id="help-title">덕담 번역</h2><button class="icon-button" data-close="help-dialog" aria-label="도움말 닫기"><i data-icon="close"></i></button></div>
+    <p>입력하거나 마이크를 누르면 자동으로 번역해요.</p>
+    <p class="help-note">잔소리를 덕담으로만 바꿉니다. 입력한 문장은 번역을 위해 OpenAI로 전송됩니다. 음성 인식은 지원 브라우저에서 사용할 수 있으며, 브라우저 제공사의 서비스에서 처리될 수 있어요.</p>
+  </dialog>
+</body>
+</html>
