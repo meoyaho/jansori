@@ -17,7 +17,7 @@ main{max-width:1500px;width:87%;margin:18px auto 0}.input-modes{display:flex;gap
   .language-bar>div{justify-content:center;padding:0}
   .language-bar>div>span{border:0;font-size:16px;padding:0 18px}
   .direction{color:#74787d}
-  .panels{flex:1;min-height:0;grid-template-columns:1fr;grid-template-rows:minmax(0,1.2fr) minmax(0,.8fr);gap:0}
+  .panels{flex:1;min-height:0;grid-template-columns:1fr;grid-template-rows:repeat(2,minmax(0,1fr));gap:0}
   .source-panel,.result-panel{border:0;border-radius:0;padding:17px 16px 10px;min-height:0;overflow:hidden}
   .source-panel textarea{font-size:24px;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:0 40px 9px 2px}
   .result-text{font-size:24px;padding-left:2px;min-height:0;overflow-y:auto;overscroll-behavior:contain}
