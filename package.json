@@ -6,8 +6,10 @@
   "scripts": {
     "dev": "node server.mjs",
     "start": "node server.mjs",
-    "check": "node --check app.js && node --check server.mjs",
-    "test": "node --test tests/*.test.mjs"
+    "check": "node --check app.js && node --check server.mjs && node --check functions/index.mjs && node --check functions/translate.mjs && node --check functions/prompt.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "build:pages": "node scripts/build-pages.mjs",
+    "deploy:functions": "firebase deploy --only functions:jansori --project jansori-28924"
   },
   "engines": {
     "node": ">=20.12"

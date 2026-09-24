@@ -4,3 +4,8 @@
 !.env.example
 node_modules/
 .DS_Store
+.pages/
+.firebase/
+firebase-debug.log
+firebase-debug.*.log
+*-debug.log

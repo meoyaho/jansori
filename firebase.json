@@ -1,0 +1,9 @@
+{
+  "functions": [{
+    "source": "functions",
+    "codebase": "jansori",
+    "runtime": "nodejs22",
+    "ignore": ["node_modules", ".git", ".env", ".env.*", "firebase-debug.log", "firebase-debug.*.log"],
+    "predeploy": ["npm --prefix \"$PROJECT_DIR\" run check"]
+  }]
+}

@@ -1,0 +1,12 @@
+{
+  "name": "jansori-functions",
+  "private": true,
+  "type": "module",
+  "main": "index.mjs",
+  "engines": {
+    "node": "22"
+  },
+  "dependencies": {
+    "firebase-functions": "7.4.0"
+  }
+}

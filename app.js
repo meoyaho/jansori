@@ -21,6 +21,9 @@ const paths = {
 };
 document.querySelectorAll('[data-icon]').forEach(el => { el.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true">${paths[el.dataset.icon] || ''}</svg>`; });
 const $ = id => document.getElementById(id);
+const translationEndpoint = ['localhost', '127.0.0.1', '[::1]'].includes(location.hostname)
+  ? '/api/translate'
+  : 'https://asia-northeast3-jansori-28924.cloudfunctions.net/translate';
 let current = null;
 let recognition = null;
 let listenTimeout, translationTimer, toastTimer;
@@ -93,10 +96,13 @@ async function translate() {
   $('result').textContent = '번역 중…';
   $('result').setAttribute('aria-busy', 'true');
   try {
-    const response = await fetch('/api/translate', {
+    const response = await fetch(translationEndpoint, {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ text: source }), signal: controller.signal,
     });
+    if (!response.headers.get('content-type')?.includes('application/json')) {
+      throw new Error('번역 서버에 연결하지 못했어요. 잠시 후 다시 시도해 주세요.');
+    }
     const data = await response.json();
     if (!response.ok) throw new Error(data.error || '번역하지 못했어요.');
     if (typeof data.text !== 'string' || !data.text.trim()) throw new Error('번역 결과가 비어 있어요.');
